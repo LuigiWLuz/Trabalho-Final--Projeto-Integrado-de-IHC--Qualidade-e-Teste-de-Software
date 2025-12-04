@@ -1,4 +1,4 @@
-# 🎸 Metal Tickets 
+#  Metal Tickets 
 
 Este é o repositório do sistema de venda de ingressos "Metal Tickets".
 
