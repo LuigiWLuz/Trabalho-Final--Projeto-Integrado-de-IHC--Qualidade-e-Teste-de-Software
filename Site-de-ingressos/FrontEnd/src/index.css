@@ -1,0 +1,183 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Metal+Mania&family=Inter:wght@400;500;700&display=swap");
+@plugin "daisyui";
+
+/* =========================================
+   ESTILOS GERAIS
+   ========================================= */
+html {
+  font-family: "Inter", sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    background-color: #000;
+}
+
+h1, h2, h3, #siteName, .title {
+  font-family: "Metal Mania", cursive;
+}
+
+section {
+  scroll-margin-top: 80px;
+}
+
+/* =========================================
+   BACKGROUND PARALLAX
+   ========================================= */
+.parallax-background {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('imgs/parallax.jpg'); 
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh; 
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* =========================================
+   CUSTOMIZAÇÃO DO CARROSSEL (SWIPER)
+   ========================================= */
+:root {
+  --swiper-theme-color: #DC2626 !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #DC2626 !important;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+}
+
+.custom-swiper {
+  padding-left: 0 !important;  
+  padding-right: 0 !important; 
+  padding-bottom: 50px !important; 
+}
+
+.custom-swiper .swiper-button-prev,
+.custom-swiper .swiper-button-next {
+  display: none !important;
+}
+
+.custom-swiper .swiper-pagination {
+  bottom: 0px !important;
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background: #71717a !important;
+  opacity: 1 !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin: 0 8px !important;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.5);
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background: #DC2626 !important;
+  transform: scale(1.4);
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.6);
+}
+
+/* =========================================
+   MODO ALTO CONTRASTE (CORRIGIDO FINAL)
+   ========================================= */
+
+/* 1. Ativação */
+.high-contrast {
+  background-color: #000000 !important;
+  min-height: 100vh;
+}
+
+/* 2. Textos e Bordas */
+.high-contrast * {
+  color: #FFFF00 !important;
+  border-color: #FFFFFF !important;
+}
+
+/* 3. Containers Pretos (REMOVIDO .drawer-side DAQUI) */
+.high-contrast body,
+.high-contrast main,
+.high-contrast header,
+.high-contrast footer,
+.high-contrast section,
+.high-contrast article,
+.high-contrast nav,
+.high-contrast aside,
+.high-contrast .card,
+.high-contrast .bg-zinc-900,
+.high-contrast .bg-zinc-950,
+.high-contrast .bg-black {
+  background-color: #000000 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* 4. CORREÇÃO DO DRAWER/MENU */
+/* O container geral do drawer deve ser transparente para não tapar o site */
+.high-contrast .drawer-side {
+    background-color: transparent !important; 
+}
+/* A máscara de fundo (overlay) deve ser semi-transparente */
+.high-contrast .drawer-overlay {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(4px); /* Desfoque para focar no menu */
+}
+
+/* 5. Inputs e Botões */
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea,
+.high-contrast button {
+  background-color: #000000 !important;
+  color: #FFFFFF !important; 
+  border: 2px solid #FFFF00 !important; 
+  border-radius: 0 !important;
+}
+
+/* 6. Links */
+.high-contrast a,
+.high-contrast button.text-xl {
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+}
+
+/* 7. Botões Destaque */
+.high-contrast button.bg-red-600 {
+  border: 4px double #FFFF00 !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+
+/* 8. Ícones */
+.high-contrast svg {
+  stroke: #FFFF00 !important;
+  fill: none !important;
+}
+
+/* 9. Foco */
+.high-contrast *:focus,
+.high-contrast *:focus-visible {
+  outline: 4px solid #FFFFFF !important;
+  outline-offset: 4px !important;
+  background-color: #333333 !important;
+}
+
+/* 10. Imagens */
+.high-contrast img,
+.high-contrast .banner-img { 
+    filter: grayscale(100%) contrast(120%) brightness(110%) !important;
+    border: 2px solid #FFFFFF !important;
+    opacity: 1 !important;
+}
+
+/* 11. Limpeza */
+.high-contrast .parallax-background {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
