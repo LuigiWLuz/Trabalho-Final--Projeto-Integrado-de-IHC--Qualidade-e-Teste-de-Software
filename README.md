@@ -12,7 +12,7 @@ O projeto é construído em **React**, **Vite** e **Tailwind CSS**.
 
 ---
 
-### 2. Configuração e Execução Local ⚙️
+### 2. Configuração e Execução Local
 
 Para o funcionamento completo, é necessário configurar o Banco de Dados e o Servidor Frontend.
 
