@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; 
 import { useState } from "react"; 
 import Button2 from "./buttons/button2"; 
 import { Menu, X, SlidersHorizontal, Contrast } from "lucide-react"; 
@@ -18,17 +18,39 @@ export default function Navbar({
   onClearSearch
 }) { 
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  
+  // HOOKS PARA NAVEGAÇÃO INTELIGENTE
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   
-  const handleNavClick = (targetId) => {
-      setIsMenuOpen(false);
-      if (targetId === "Home") {
-         window.scrollTo({ top: 0, behavior: "smooth" });
+  // FUNÇÃO UNIFICADA PARA TRATAR ROLAGEM E REDIRECIONAMENTO
+  const handleSmartNavigation = (targetHash) => {
+      setIsMenuOpen(false); // Fecha o menu mobile
+
+      // Remove o # para obter o ID do elemento (ex: #Shows vira Shows)
+      const targetId = targetHash.replace('#', '');
+      
+      // 1. Se JÁ estiver na Home (caminho '/'):
+      if (location.pathname === '/') {
+          
+          if (targetId === "Home") {
+             // Home: Apenas rola para o topo
+             window.scrollTo({ top: 0, behavior: "smooth" });
+             window.history.pushState(null, null, "/"); // Limpa o hash na URL
+          } else {
+             // Shows/Faq: Apenas rola para a seção
+             document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
+             // Atualiza o hash na URL sem recarregar a página
+             window.history.pushState(null, null, targetHash);
+          }
       } else {
-         document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
+          // 2. Se NÃO estiver na Home:
+          // Redireciona para a Home com o hash (o scroll será tratado na Home)
+          navigate(`/${targetHash}`);
       }
   };
 
@@ -44,7 +66,7 @@ export default function Navbar({
         
         <div className="flex items-center gap-6 w-full md:w-auto">
           
-          {/* BOTÃO HAMBÚRGUER: Z-60 para ficar acima do próprio menu aberto */}
+          {/* BOTÃO HAMBÚRGUER */}
           <button
             onClick={toggleMenu} 
             className="p-2 md:hidden text-red-600 hover:text-white transition-colors z-[60] cursor-pointer"
@@ -71,13 +93,16 @@ export default function Navbar({
           </div>
         </div>
         
-        {/* NAVEGAÇÃO DESKTOP */}
+        {/* NAVEGAÇÃO DESKTOP - CORRIGIDO COM FUNÇÃO INTELIGENTE */}
         <div className="flex items-center space-x-6">
 
           <nav className="space-x-8 hidden md:block">
-              <button className="text-xl hover:text-red-500 transition-colors cursor-pointer font-bold uppercase tracking-wide" onClick={() => handleNavClick("Home")}>Home</button>
-              <button className="text-xl hover:text-red-500 transition-colors cursor-pointer font-bold uppercase tracking-wide" onClick={() => handleNavClick("Shows")}>Shows</button>
-              <button className="text-xl hover:text-red-500 transition-colors cursor-pointer font-bold uppercase tracking-wide" onClick={() => handleNavClick("Faq")}>FAQ</button>
+              {/* Home: Usa a função com hash #Home */}
+              <button className="text-xl hover:text-red-500 transition-colors cursor-pointer font-bold uppercase tracking-wide" onClick={() => handleSmartNavigation("#Home")}>Home</button>
+              {/* Shows: Usa a função com hash #Shows */}
+              <button className="text-xl hover:text-red-500 transition-colors cursor-pointer font-bold uppercase tracking-wide" onClick={() => handleSmartNavigation("#Shows")}>Shows</button>
+              {/* Faq: Usa a função com hash #Faq */}
+              <button className="text-xl hover:text-red-500 transition-colors cursor-pointer font-bold uppercase tracking-wide" onClick={() => handleSmartNavigation("#Faq")}>FAQ</button>
           </nav>
 
           <div className="space-x-4 hidden md:flex items-center">
@@ -109,8 +134,6 @@ export default function Navbar({
 
       {/* MENU MOBILE EXPANDIDO */}
       {isMenuOpen && (
-        // 🎯 MUDANÇA: 'fixed' garante que cubra a tela corretamente
-        // top-24 (96px) faz começar logo abaixo do header
         <div className="md:hidden fixed top-24 left-0 w-full h-[calc(100vh-6rem)] bg-zinc-950 border-b border-red-500 shadow-2xl z-40 overflow-y-auto pb-10">
           <ul className="flex flex-col p-6 space-y-4">
              
@@ -122,14 +145,15 @@ export default function Navbar({
                 />
              </div>
 
+            {/* ITENS MOBILE - CORRIGIDO COM FUNÇÃO INTELIGENTE */}
             <li className="p-3 hover:bg-zinc-900 rounded-lg border-b border-zinc-800">
-                <button onClick={() => handleNavClick("Home")} className="text-white text-2xl font-bold uppercase block w-full text-left cursor-pointer">Home</button>
+                <button onClick={() => handleSmartNavigation("#Home")} className="text-white text-2xl font-bold uppercase block w-full text-left cursor-pointer">Home</button>
             </li>
             <li className="p-3 hover:bg-zinc-900 rounded-lg border-b border-zinc-800">
-                <button onClick={() => handleNavClick("Shows")} className="text-white text-2xl font-bold uppercase block w-full text-left cursor-pointer">Shows</button>
+                <button onClick={() => handleSmartNavigation("#Shows")} className="text-white text-2xl font-bold uppercase block w-full text-left cursor-pointer">Shows</button>
             </li>
             <li className="p-3 hover:bg-zinc-900 rounded-lg border-b border-zinc-800">
-                <button onClick={() => handleNavClick("Faq")} className="text-white text-2xl font-bold uppercase block w-full text-left cursor-pointer">FAQ</button>
+                <button onClick={() => handleSmartNavigation("#Faq")} className="text-white text-2xl font-bold uppercase block w-full text-left cursor-pointer">FAQ</button>
             </li>
             
             <div className="pt-6 space-y-4 mt-4">
